@@ -1,0 +1,74 @@
+[
+    {
+        "model": "users.user", 
+        "pk": 1, 
+        "fields": {
+            "password": "pbkdf2_sha256$260000$TxyHScabzmNta07VhImqdS$JcfvdAQc5vw+aFiaYdCIjsPCnlugDo78SdWxlLgxN+g=", 
+            "last_login": "2023-05-24T12:05:09.337Z", 
+            "is_superuser": true, 
+            "username": "admin", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_staff": true, 
+            "is_active": true, 
+            "date_joined": "2023-05-14T08:34:02.131Z", 
+            "email": "admin@todo.com", 
+            "groups": [], 
+            "user_permissions": []
+        }
+    }, 
+    {
+        "model": "users.user", 
+        "pk": 2, 
+        "fields": {
+            "password": "pbkdf2_sha256$260000$LXOVbqqDwH7H7LPr51Svf8$Xq1+OKIcWaLHU5SJa4DqASg9C4EDAzbEt6zBc3V/RsE=", 
+            "last_login": null, 
+            "is_superuser": false, 
+            "username": "user1", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_staff": false, 
+            "is_active": true, 
+            "date_joined": "2023-05-24T12:02:37Z", 
+            "email": "user1@todo.com", 
+            "groups": [], 
+            "user_permissions": []
+        }
+    }, 
+    {
+        "model": "users.user", 
+        "pk": 3, 
+        "fields": {
+            "password": "pbkdf2_sha256$260000$qPRQomKUYqmcwNyFJ9jkon$n1e2BocAX3UPR250rOsAgRwyeALB61kqrUbgOos4Fwo=", 
+            "last_login": null, 
+            "is_superuser": false, 
+            "username": "user2", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_staff": false, 
+            "is_active": true, 
+            "date_joined": "2023-05-24T12:06:09Z", 
+            "email": "user2@todo.com", 
+            "groups": [], 
+            "user_permissions": []
+        }
+    }, 
+    {
+        "model": "users.user", 
+        "pk": 4, 
+        "fields": {
+            "password": "pbkdf2_sha256$260000$94gXxLT5siWzvjybGGxAaV$Ckle7pxoRuh4DNXOpQPx3/bDVgjoStpfZyAlZWiXBb0=", 
+            "last_login": null, 
+            "is_superuser": false, 
+            "username": "moderator1", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_staff": true, 
+            "is_active": true, 
+            "date_joined": "2023-05-24T12:08:13Z", 
+            "email": "moderator1@todo.com", 
+            "groups": [], 
+            "user_permissions": []
+        }
+    }
+]
