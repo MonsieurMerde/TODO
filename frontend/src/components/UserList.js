@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const UserItem = ({user}) => {
     return (
@@ -16,8 +16,8 @@ const UserItem = ({user}) => {
                 {user.email}
             </td>
         </tr>
-    )
-}
+    );
+};
 
 const UserList = ({users}) => {
     return (
@@ -36,7 +36,7 @@ const UserList = ({users}) => {
             </th>
             {users.map((user) => <UserItem user={user} />)}
         </table>
-    )
-}
+    );
+};
 
-export default UserList
+export default UserList;
