@@ -1,4 +1,6 @@
 import React from 'react';
+import NavbarItem from './components/Menu';
+import Footer from './components/Footer';
 import UserList from './components/UserList';
 import axios from 'axios';
 import './App.css';
@@ -30,6 +32,7 @@ class App extends React.Component {
         return (
         <div>
             <UserList users={this.state.users} />
+            <Footer />
         </div>
         )
     }
