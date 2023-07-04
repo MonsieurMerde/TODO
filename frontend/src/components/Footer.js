@@ -4,7 +4,7 @@ function Footer() {
     return (
       <footer>
         <div>
-          TODO Test Footer
+          TODO
         </div>
       </footer>
     );
