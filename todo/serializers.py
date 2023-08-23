@@ -24,4 +24,5 @@ class ToDoModelSerializer(HyperlinkedModelSerializer):
             "text",
             "user_created",
             "is_active",
+            "deleted",
         ]
