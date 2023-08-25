@@ -14,4 +14,7 @@ class ProjectFilter(FilterSet):
 class ToDoFilter(FilterSet):
     class Meta:
         model = ToDo
-        fields = ["project"]
+        fields = {
+            "project": ["exact"],
+            "created": ["gt", "lt"],
+        }
