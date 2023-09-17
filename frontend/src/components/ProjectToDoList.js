@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 const ToDoItem = ({todo}) => {
     return (
@@ -12,14 +13,14 @@ const ToDoItem = ({todo}) => {
             <td>
                 {todo.userCreated}
             </td>
-            <td>
-                {todo.isActive}
-            </td>
+            
         </tr>
     );
 };
 
-const ToDoList = ({todos}) => {
+const ProjectToDoList = ({todos}) => {
+    let {projectID} = useParams()
+    let filtered_todos = todos.filter((todo) => todo.project == projectID)
     return (
         <table>
             <th>
@@ -31,12 +32,9 @@ const ToDoList = ({todos}) => {
             <th>
                 Creator
             </th>
-            <th>
-                Active
-            </th>
-            {todos.map((todo) => <ToDoItem todo={todo} />)}
+            {filtered_todos.map((todo) => <ToDoItem todo={todo} />)}
         </table>
     );
 };
 
-export default ToDoList;
+export default ProjectToDoList;
