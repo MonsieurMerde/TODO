@@ -1,5 +1,5 @@
 import React from 'react';
-import NavbarItem from './components/Menu';
+import NotFound404 from './components/NotFound404';
 import Footer from './components/Footer';
 import ProjectList from './components/ProjectList';
 import ProjectToDoList from './components/ProjectToDoList';
@@ -71,6 +71,7 @@ class App extends React.Component {
                     </Route>
                     <Route exact path='/todo' element={<ToDoList todos={this.state.todos} />} />
                     <Route exact path='/' element={<Navigate to='/users' />} />
+                    <Route path='*' element={<NotFound404 />} />
                 </Routes>
             </BrowserRouter>
             <Footer />
