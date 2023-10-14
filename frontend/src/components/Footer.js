@@ -5,6 +5,7 @@ function Footer() {
         <footer>
             <div>
                 <center>
+                    <br />
                     TODO. All rights reserved
                 </center>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import NotFound404 from './components/NotFound404';
+import Menu from './components/Menu';
 import Footer from './components/Footer';
 import ProjectList from './components/ProjectList';
 import ProjectToDoList from './components/ProjectToDoList';
@@ -63,6 +64,7 @@ class App extends React.Component {
     render() {
         return (
         <div>
+            <Menu />
             <BrowserRouter>
                 <Routes>
                     <Route exact path='/users' element={<UserList users={this.state.users} />} />
