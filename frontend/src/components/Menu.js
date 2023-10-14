@@ -3,13 +3,11 @@ import React from "react";
 function Menu() {
     return (
         <div>
-            <header>
+            <h1>
                 <center>
                 TODO
-                <br />
-                <br />
                 </center>
-            </header>
+            </h1>
         </div>
     );
 };
