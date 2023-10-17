@@ -65,6 +65,23 @@ class App extends React.Component {
     getHeaders() {
         let headers = {}
         if(this.isAuth()) {
+            if(this.isValidToken(this.state.tokenAccess) === false) {
+                axios.post('http://127.0.0.1:8000/api-jwt/refresh/', {refresh: this.state.tokenRefresh})
+                .then(response => {
+                    this.setState (
+                        {
+                            'tokenAccess': response.data.access
+                        }
+                    )
+                    console.log(this.state.tokenAccess)
+                    console.log("Токен обновлен")
+                }
+                )
+                .catch(error => {
+                    console.log('Токен не обновлен')
+                }
+                )
+            }
             headers['Authorization'] = `Bearer ${this.state.tokenAccess}`
         }
         return headers
@@ -131,6 +148,30 @@ class App extends React.Component {
                 )
             }
             )
+    }
+
+    isValidToken(tokenAccess) {
+        let check = ''
+        axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: tokenAccess})
+        .then(response => {
+            if (response.status === 200) {
+                check = true
+                console.log('Токен валидный')
+            }
+        }
+        )
+        .catch(error => {
+            if (error.response.status === 401) {
+                check = false
+                console.log('Токен невалидный')
+            }
+            else {
+                console.log(error)
+            }
+
+        }
+        )
+        return check
     }
 
     getTokenFromStorage() {
