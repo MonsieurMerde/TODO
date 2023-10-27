@@ -149,7 +149,8 @@ REST_FRAMEWORK = {
     # "PAGE_SIZE": 2,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
+        "rest_framework.permissions.DjangoModelPermissions",
+        # "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
@@ -158,3 +159,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
+
+from datetime import timedelta
+
+SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(seconds=30)}
