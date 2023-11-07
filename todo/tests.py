@@ -1,9 +1,10 @@
+import json
 import random
 
 from django.test import TestCase
 from mixer.backend.django import mixer
 from rest_framework import status
-from rest_framework.test import APIClient, APITestCase
+from rest_framework.test import APIClient, APITestCase, RequestsClient
 
 from todo.models import Project
 from users.models import User
@@ -41,6 +42,7 @@ class ProjectsTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response = self.client.get("/api/projects/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
 class ProjectsAPITestCase(APITestCase):
@@ -76,3 +78,18 @@ class ProjectsAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         project = Project.objects.get(id=1)
         self.assertEqual(project.description, "Edited description")
+
+
+# Live-тест с использованием RequestsClient
+
+requests_client = RequestsClient()
+json_data = json.dumps({"username": "user2", "password": "user2"})
+jwt_response = requests_client.post(
+    "http://127.0.0.1:8000/api-jwt/", headers={"Content-Type": "application/json"}, data=json_data
+)
+jwt_token = jwt_response.json()["access"]
+
+url = "http://127.0.0.1:8000/api/todo"
+headers = {"Authorization": f"Bearer {jwt_token}"}
+response = requests_client.get(url, headers=headers)
+assert response.status_code == 200

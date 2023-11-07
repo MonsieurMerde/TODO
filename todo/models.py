@@ -5,8 +5,8 @@ from users.models import User
 
 class Project(models.Model):
     project_name = models.CharField(max_length=128)
-    link = models.URLField(max_length=256, blank=False, null=True)
-    description = models.TextField(blank=False, null=True)
+    link = models.URLField(max_length=256, blank=False, null=False)
+    description = models.TextField(blank=False, null=False)
     project_team = models.ManyToManyField(User)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
