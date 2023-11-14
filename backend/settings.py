@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "drf_yasg",
+    "graphene_django",
 ]
 
 MIDDLEWARE = [
@@ -114,6 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+GRAPHENE = {"SCHEMA": "backend.graphql.schema"}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
