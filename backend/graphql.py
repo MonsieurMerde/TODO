@@ -82,9 +82,38 @@ class UserUpdateMutation(graphene.Mutation):
         return cls(user)
 
 
+class UserDeleteMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+
+    user = graphene.List(UserObjectType)
+
+    @classmethod
+    def mutate(cls, root, info, id):
+        user = User.objects.get(pk=id)
+        user.delete()
+        return UserDeleteMutation(user=User.objects.all())
+
+
+class ProjectDeleteMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+
+    project = graphene.Field(ProjectObjectType)
+
+    @classmethod
+    def mutate(cls, root, info, id):
+        project = Project.objects.get(pk=id)
+        project.deleted = True
+        project.save()
+        return cls(project)
+
+
 class Mutation(graphene.ObjectType):
     create_user = UserCreateMutation.Field()
     update_user = UserUpdateMutation.Field()
+    delete_user = UserDeleteMutation.Field()
+    delete_project = ProjectDeleteMutation.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
