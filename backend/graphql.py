@@ -40,4 +40,51 @@ class Query(graphene.ObjectType):
         return ToDo.objects.all()
 
 
-schema = graphene.Schema(query=Query)
+class UserCreateMutation(graphene.Mutation):
+    class Arguments:
+        username = graphene.String(required=True)
+        first_name = graphene.String()
+        last_name = graphene.String()
+        email = graphene.String(required=True)
+
+    user = graphene.Field(UserObjectType)
+
+    @classmethod
+    def mutate(cls, root, info, username, email, first_name=None, last_name=None):
+        user = User(username=username, first_name=first_name, last_name=last_name, email=email)
+        user.save()
+        return cls(user)
+
+
+class UserUpdateMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+        username = graphene.String()
+        first_name = graphene.String()
+        last_name = graphene.String()
+        email = graphene.String()
+
+    user = graphene.Field(UserObjectType)
+
+    @classmethod
+    def mutate(cls, root, info, id, username=None, first_name=None, last_name=None, email=None):
+        user = User.objects.get(pk=id)
+        if username:
+            user.username = username
+        if first_name:
+            user.first_name = first_name
+        if last_name:
+            user.last_name = last_name
+        if email:
+            user.email = email
+        if username or first_name or last_name or email:
+            user.save()
+        return cls(user)
+
+
+class Mutation(graphene.ObjectType):
+    create_user = UserCreateMutation.Field()
+    update_user = UserUpdateMutation.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
