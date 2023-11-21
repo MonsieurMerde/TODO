@@ -13,6 +13,7 @@ class UserModelSerializer(ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "password",
         ]
 
     def create(self, validated_data):
@@ -29,6 +30,7 @@ class UserModelSerializerV2(ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "password",
             "is_superuser",
             "is_staff",
         ]

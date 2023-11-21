@@ -12,6 +12,7 @@ class ProjectModelSerializer(ModelSerializer):
             "link",
             "description",
             "project_team",
+            "deleted",
         ]
 
 
