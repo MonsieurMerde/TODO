@@ -2,6 +2,7 @@ import React from 'react';
 import NotFound404 from './components/NotFound404';
 import Menu from './components/Menu';
 import Footer from './components/Footer';
+import ProjectCreateForm from './components/ProjectCreateForm';
 import ProjectList from './components/ProjectList';
 import ProjectToDoList from './components/ProjectToDoList';
 import ToDoList from './components/ToDoList';
@@ -145,6 +146,23 @@ class App extends React.Component {
         )
     }
 
+    createProject(projectName, link, description, users) {
+        const headers = this.getHeaders()
+        axios.post(
+            'http://127.0.0.1:8000/api/projects/', 
+            {'project_name': projectName, 'link': link, 'description': description, 'project_team': users}, 
+            {headers}
+        )
+            .then(response => {
+                this.getData()
+            }
+            )
+            .catch(error => {
+                console.log(error)
+            }
+            )
+    }
+
     deleteProject(projectID) {
         const headers = this.getHeaders()
         axios.delete(`http://127.0.0.1:8000/api/projects/${projectID}`, {headers})
@@ -190,8 +208,13 @@ class App extends React.Component {
                             deleteProject={(projectID) => this.deleteProject(projectID)} />} />
                         <Route path=':projectID' element={<ProjectToDoList todos={this.state.todos} />} />
                     </Route>
+                    <Route exact path='/projects/create' element={<ProjectCreateForm users={this.state.users} 
+                        createProject={(projectName, link, description, users) => 
+                        this.createProject(projectName, link, description, users)} />} />
                     <Route exact path='/todo' element={<ToDoList todos={this.state.todos} />} />
-                    <Route exact path='/login' element={<LoginForm getToken={(username, password) => this.getToken(username, password)} />} />
+                    <Route exact path='/login' 
+                        element={<LoginForm getToken={(username, password) => 
+                        this.getToken(username, password)} />} />
                     <Route exact path='/' element={<Navigate to='/users' />} />
                     <Route path='*' element={<NotFound404 />} />
                 </Routes>
