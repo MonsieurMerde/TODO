@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ToDoItem = ({todo}) => {
     return (
@@ -12,30 +13,27 @@ const ToDoItem = ({todo}) => {
             <td>
                 {todo.userCreated}
             </td>
-            <td>
-                {todo.isActive}
-            </td>
         </tr>
     );
 };
 
 const ToDoList = ({todos}) => {
     return (
-        <table>
-            <th>
-                Project
-            </th>
-            <th>
-                Text
-            </th>
-            <th>
-                Creator
-            </th>
-            <th>
-                Active
-            </th>
-            {todos.map((todo) => <ToDoItem todo={todo} />)}
-        </table>
+        <div>
+            <table>
+                <th>
+                    Project
+                </th>
+                <th>
+                    Text
+                </th>
+                <th>
+                    Creator
+                </th>
+                {todos.map((todo) => <ToDoItem todo={todo} />)}
+            </table>
+            <Link to='/todo/create'>Create ToDo</Link>
+        </div>
     );
 };
 

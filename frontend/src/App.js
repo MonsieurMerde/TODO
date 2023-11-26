@@ -3,6 +3,7 @@ import NotFound404 from './components/NotFound404';
 import Menu from './components/Menu';
 import Footer from './components/Footer';
 import ProjectCreateForm from './components/ProjectCreateForm';
+import ToDoCreateForm from './components/ToDoCreateForm ';
 import ProjectList from './components/ProjectList';
 import ProjectToDoList from './components/ProjectToDoList';
 import ToDoList from './components/ToDoList';
@@ -176,6 +177,23 @@ class App extends React.Component {
             )
     }
 
+    createToDo(project, text, userCreated, isActive) {
+        const headers = this.getHeaders()
+        axios.post(
+            'http://127.0.0.1:8000/api/todo/', 
+            {'project': project, 'text': text, 'user_created': userCreated, 'is_active': isActive}, 
+            {headers}
+        )
+            .then(response => {
+                this.getData()
+            }
+            )
+            .catch(error => {
+                console.log(error)
+            }
+            )
+    }
+
     componentDidMount() {
         this.getTokenFromStorage()
     }
@@ -192,6 +210,9 @@ class App extends React.Component {
                         </li>
                         <li>
                             <Link to='/projects'>Projects</Link>
+                        </li>
+                        <li>
+                            <Link to='/todo'>ToDo</Link>
                         </li>
                         <li>
                             {
@@ -211,6 +232,9 @@ class App extends React.Component {
                     <Route exact path='/projects/create' element={<ProjectCreateForm users={this.state.users} 
                         createProject={(projectName, link, description, users) => 
                         this.createProject(projectName, link, description, users)} />} />
+                    <Route exact path='/todo/create' element={<ToDoCreateForm projects={this.state.projects}
+                        users={this.state.users} createToDo={(project, text, userCreated, isActive) =>
+                        this.createToDo(project, text, userCreated, isActive)} />} />
                     <Route exact path='/todo' element={<ToDoList todos={this.state.todos} />} />
                     <Route exact path='/login' 
                         element={<LoginForm getToken={(username, password) => 

@@ -38,7 +38,7 @@ class ProjectCreateForm extends React.Component {
             this.state.link, 
             this.state.description, 
             this.state.projectTeam
-        )
+            )
         event.preventDefault()
     }
 
