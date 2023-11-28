@@ -30,7 +30,9 @@ class ToDoModelViewSet(ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instanse = self.get_object()
-        serializer = ToDoModelSerializer(instanse, data={"deleted": True}, context={"request": request}, partial=True)
+        serializer = ToDoModelSerializer(
+            instanse, data={"is_active": False}, context={"request": request}, partial=True
+        )
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data)

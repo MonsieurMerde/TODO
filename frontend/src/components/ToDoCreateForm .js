@@ -27,10 +27,6 @@ class ToDoCreateForm extends React.Component {
             this.state.userCreated, 
             this.state.isActive
         )
-        console.log(this.state.project)
-        console.log(this.state.text)
-        console.log(this.state.userCreated)
-        console.log(this.state.isActive)
         event.preventDefault()
     }
 

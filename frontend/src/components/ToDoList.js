@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ToDoItem = ({todo}) => {
+const ToDoItem = ({todo, deleteToDo}) => {
     return (
         <tr>
             <td>
@@ -13,11 +13,15 @@ const ToDoItem = ({todo}) => {
             <td>
                 {todo.userCreated}
             </td>
+            <td>
+                <button onClick={() => deleteToDo(todo.id)} type='button'>Delete</button>
+            </td>
         </tr>
     );
 };
 
-const ToDoList = ({todos}) => {
+const ToDoList = ({todos, deleteToDo}) => {
+    let filteredTodos = todos.filter((todo) => todo.isActive === true)
     return (
         <div>
             <table>
@@ -30,7 +34,7 @@ const ToDoList = ({todos}) => {
                 <th>
                     Creator
                 </th>
-                {todos.map((todo) => <ToDoItem todo={todo} />)}
+                {filteredTodos.map((todo) => <ToDoItem todo={todo} deleteToDo={deleteToDo}/>)}
             </table>
             <Link to='/todo/create'>Create ToDo</Link>
         </div>

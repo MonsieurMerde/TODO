@@ -194,6 +194,19 @@ class App extends React.Component {
             )
     }
 
+    deleteToDo(todoID) {
+        const headers = this.getHeaders()
+        axios.delete(`http://127.0.0.1:8000/api/todo/${todoID}`, {headers})
+            .then(response => {
+                this.getData()
+            }
+            )
+            .catch(error => {
+                console.log(error)
+            }
+            )
+    }
+
     componentDidMount() {
         this.getTokenFromStorage()
     }
@@ -227,7 +240,8 @@ class App extends React.Component {
                     <Route exact path='/projects'>
                         <Route index element={<ProjectList projects={this.state.projects} 
                             deleteProject={(projectID) => this.deleteProject(projectID)} />} />
-                        <Route path=':projectID' element={<ProjectToDoList todos={this.state.todos} />} />
+                        <Route path=':projectID' element={<ProjectToDoList todos={this.state.todos} 
+                            deleteToDo={(todoID) => this.deleteToDo(todoID)} />} />
                     </Route>
                     <Route exact path='/projects/create' element={<ProjectCreateForm users={this.state.users} 
                         createProject={(projectName, link, description, users) => 
@@ -235,7 +249,8 @@ class App extends React.Component {
                     <Route exact path='/todo/create' element={<ToDoCreateForm projects={this.state.projects}
                         users={this.state.users} createToDo={(project, text, userCreated, isActive) =>
                         this.createToDo(project, text, userCreated, isActive)} />} />
-                    <Route exact path='/todo' element={<ToDoList todos={this.state.todos} />} />
+                    <Route exact path='/todo' element={<ToDoList todos={this.state.todos} 
+                        deleteToDo={(todoID) => this.deleteToDo(todoID)} />} />
                     <Route exact path='/login' 
                         element={<LoginForm getToken={(username, password) => 
                         this.getToken(username, password)} />} />
