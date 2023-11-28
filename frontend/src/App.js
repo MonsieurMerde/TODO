@@ -56,6 +56,23 @@ class App extends React.Component {
             )
     }
 
+    isValidToken(tokenAccess) {
+        axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: tokenAccess})
+            .then(response => {
+                return true
+            }
+            )
+            .catch(error => {
+                if (error.response.data.code === 'token_not_valid') {
+                    return false
+                }
+                else {
+                    console.log(error)
+                }
+            }
+            )
+    }
+
     isAuth() {
         return !!this.state.tokenAccess
     }
@@ -138,13 +155,33 @@ class App extends React.Component {
     getTokenFromStorage() {
         const tokenAccess = localStorage.getItem('tokenAccess')
         const tokenRefresh = localStorage.getItem('tokenRefresh')
-        this.setState(
-            {
-                'tokenAccess': tokenAccess,
-                'tokenRefresh': tokenRefresh
-            },
-            () => this.getData()
-        )
+        if (!this.isValidToken(tokenAccess)) {
+            axios.post('http://127.0.0.1:8000/api-jwt/refresh/', {refresh: tokenRefresh})
+                .then(response => {
+                    this.setState(
+                        {
+                            'tokenAccess': response.data.access
+                        },
+                        () => this.getData()
+                    )
+                    console.log('Токен обновлён')
+                }
+                )
+                .catch(error => {
+                    console.log(error)
+                }
+                )
+        }
+        else {
+            this.setState(
+                {
+                    'tokenAccess': tokenAccess,
+                    'tokenRefresh': tokenRefresh
+                },
+                () => this.getData()
+            )
+
+        }
     }
 
     createProject(projectName, link, description, users) {
