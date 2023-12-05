@@ -56,23 +56,6 @@ class App extends React.Component {
             )
     }
 
-    isValidToken(tokenAccess) {
-        axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: tokenAccess})
-            .then(response => {
-                return true
-            }
-            )
-            .catch(error => {
-                if (error.response.data.code === 'token_not_valid') {
-                    return false
-                }
-                else {
-                    console.log(error)
-                }
-            }
-            )
-    }
-
     isAuth() {
         return !!this.state.tokenAccess
     }
@@ -155,35 +138,44 @@ class App extends React.Component {
     getTokenFromStorage() {
         const tokenAccess = localStorage.getItem('tokenAccess')
         const tokenRefresh = localStorage.getItem('tokenRefresh')
-        if (!this.isValidToken(tokenAccess)) {
-            axios.post('http://127.0.0.1:8000/api-jwt/refresh/', {refresh: tokenRefresh})
+        axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: tokenAccess})
                 .then(response => {
                     this.setState(
                         {
-                            'tokenAccess': response.data.access
+                            'tokenAccess': tokenAccess,
+                            'tokenRefresh': tokenRefresh
                         },
                         () => this.getData()
                     )
-                    console.log('Токен обновлён')
+                    console.log('Токен валидный', this.state.tokenAccess)
+            }
+            )
+            .catch(error => {
+                if (error.response.data.code === 'token_not_valid') {
+                    axios.post('http://127.0.0.1:8000/api-jwt/refresh/', {refresh: tokenRefresh})
+                        .then(response => {
+                            localStorage.setItem('tokenAccess', response.data.access)
+                            this.setState(
+                                {
+                                    'tokenAccess': response.data.access
+                                },
+                                () => this.getData()
+                            )
+                            console.log('Токен обновлён', this.state.tokenAccess)
+                        }
+                        )
+                        .catch(error => {
+                            console.log(error)
+                        }
+                        )
                 }
-                )
-                .catch(error => {
+                else {
                     console.log(error)
                 }
-                )
-        }
-        else {
-            this.setState(
-                {
-                    'tokenAccess': tokenAccess,
-                    'tokenRefresh': tokenRefresh
-                },
-                () => this.getData()
+            }
             )
-
-        }
     }
-
+    
     createProject(projectName, link, description, users) {
         const headers = this.getHeaders()
         axios.post(

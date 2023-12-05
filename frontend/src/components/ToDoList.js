@@ -11,7 +11,9 @@ const ToDoItem = ({todo, deleteToDo}) => {
                 {todo.text}
             </td>
             <td>
-                {todo.userCreated}
+                <center>
+                    {todo.userCreated}
+                </center>
             </td>
             <td>
                 <button onClick={() => deleteToDo(todo.id)} type='button'>Delete</button>

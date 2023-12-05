@@ -14,7 +14,9 @@ const ProjectItem = ({project, deleteProject}) => {
                 {project.description}
             </td>
             <td>
-                {project.projectTeam}
+                <center>
+                    {project.projectTeam}
+                </center>
             </td>
             <td>
                 <button onClick={() => deleteProject(project.id)} type='button'>Delete</button>
