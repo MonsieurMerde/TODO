@@ -65,149 +65,12 @@ class App extends React.Component {
     }
 
     getHeaders() {
-        let headers = {}
+       let headers = {}
         if(this.isAuth()) {
             headers['Authorization'] = `Bearer ${this.state.tokenAccess}`
         }
-        console.log(headers)
         return headers
     }
-    //     let headers = {}
-    //     if(this.isAuth()) {
-    //         headers['Authorization'] = `Bearer ${localStorage.getItem('tokenAccess')}`
-    //     }
-    //     console.log(headers)
-    //     return headers
-    // }
-        // let headers = {}
-        // if(this.isAuth()) {
-        //     axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: localStorage.getItem('tokenAccess')})
-        //     .then(response => {
-        //         console.log('Токен валидный')
-        //     }
-        //     )
-        //     .catch(error => {
-        //         if (error.response.data.code === 'token_not_valid') {
-        //             axios.post('http://127.0.0.1:8000/api-jwt/refresh/', {refresh: localStorage.getItem('tokenRefresh')})
-        //             .then(response => {
-        //                 console.log(response.data.access)
-        //                 localStorage.setItem('tokenAccess', response.data.access)
-        //             }
-        //             )
-        //         }
-        //         else {
-        //             console.log(error)
-        //         }
-        //     }
-        //     )
-        //     console.log(localStorage.getItem('tokenAccess'))
-        //     headers['Authorization'] = `Bearer ${localStorage.getItem('tokenAccess')}`
-        // }
-        // return headers
-    // }
-        // if(this.isAuth()) {
-        //     axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: this.state.tokenAccess})
-        //     .then(response => {
-        //         console.log('Токен валидный')
-        //     }
-        //     )
-        //     .catch(error => {
-        //         if (error.response.data.code === 'token_not_valid') {
-        //             axios.post('http://127.0.0.1:8000/api-jwt/refresh/', {refresh: this.state.tokenRefresh})
-        //             .then(response => {
-        //                 this.setState(
-        //                     {
-        //                         'tokenAccess': response.data.access
-        //                     }
-        //                 )
-        //             }
-        //             )
-        //             .catch(error => {
-        //                 console.log(error)
-        //             }
-        //             )
-        //         }
-        //     }
-        //     )
-        //     console.log('test')
-        //     headers['Authorization'] = `Bearer ${this.state.tokenAccess}`
-        // }
-        // return headers
-        // if(this.isAuth()) {
-        //     // if (!this.state.isValidTokenAccess) {
-        //     //     this.refreshTokenAccess(this.state.tokenRefresh)
-        //     // }
-        //     let tokenAccess = localStorage.getItem('tokenAccess')
-        //     let tokenRefresh = localStorage.getItem('tokenRefresh')
-        //     axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: tokenAccess})
-        //         .then(response => {
-        //             // this.setState(
-        //             //     {
-        //             //         'tokenAccess': tokenAccess,
-        //             //         'tokenRefresh': tokenRefresh
-        //             //     }
-        //             // )
-        //             console.log('Токен валидный')
-        //             console.log(this.state.tokenAccess)
-        //             console.log(tokenAccess)
-        //         }
-        //         )
-        //         .catch(error => {
-        //             if (error.response.data.code === 'token_not_valid') {
-        //                 axios.post('http://127.0.0.1:8000/api-jwt/refresh/', {refresh: tokenRefresh})
-        //                     .then(response => {
-        //                         console.log('Токен обновлён')
-        //                         console.log(response.data.access)
-        //                         localStorage.setItem('tokenAccess', response.data.access)
-        //                         // this.setState(
-        //                         //     {
-        //                         //         'tokenAccess': response.data.access
-        //                         //     }
-        //                         // )
-        //                         console.log('Обновлённый токен из localStorage')
-        //                         console.log(localStorage.getItem('tokenAccess'))
-        //                         headers['Authorization'] = `Bearer ${localStorage.getItem('tokenAccess')}`
-        //                     }
-        //                     )
-        //                     .catch(error => {
-        //                         console.log(error)
-        //                     }
-        //                     )
-        //             }
-        //             else {
-        //                 console.log(error)
-        //             }
-        //         }
-        //         )
-        //     // tokenAccess = localStorage.getItem('tokenAccess')
-        //     console.log('Обновлённый токен из localStorage после пост-запроса на verify')
-        //     console.log(tokenAccess = localStorage.getItem('tokenAccess'))
-        //     headers['Authorization'] = `Bearer ${localStorage.getItem('tokenAccess')}`
-        // }
-        // axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: tokenAccess})
-        //     .then(response => {
-        //         this.setState(
-        //             {
-        //                 'isValidTokenAccess': true
-        //             }
-        //         )
-        //         console.log('Токен валидный в verifyValidTokenAccess', this.state.isValidTokenAccess)
-        //     }
-        //     )
-        //     .catch(error => {
-        //         if (error.response.data.code === 'token_not_valid') {
-        //             this.setState(
-        //                 {
-        //                     'isValidTokenAccess': false
-        //                 }
-        //             )
-        //             console.log('Токен невалидный в verifyValidTokenAccess', this.state.isValidTokenAccess)
-        //         }
-        //         else {
-        //             console.log(error)
-        //         }
-        //     }
-        //     )
     
     getData() {
         const headers = this.getHeaders()
@@ -273,15 +136,6 @@ class App extends React.Component {
     }
 
     getTokenFromStorage() {
-        // const tokenAccess = localStorage.getItem('tokenAccess')
-        // const tokenRefresh = localStorage.getItem('tokenRefresh')
-        // this.setState(
-        //     {
-        //         'tokenAccess': tokenAccess,
-        //         'tokenRefresh': tokenRefresh
-        //     },
-        //     () => this.getData()
-        // )
         const tokenAccess = localStorage.getItem('tokenAccess')
         const tokenRefresh = localStorage.getItem('tokenRefresh')
         axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: tokenAccess})
