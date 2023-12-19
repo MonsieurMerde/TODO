@@ -1,0 +1,21 @@
+version: '3.1'
+
+services: 
+  db:
+    image: postgres:13.7
+    privileged: true
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: 'todo'
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: 'admin'
+  adminer:
+    image: adminer:4.7.8-standalone
+    privileged: true
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
