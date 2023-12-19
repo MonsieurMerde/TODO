@@ -2,6 +2,8 @@ import React from 'react';
 import NotFound404 from './components/NotFound404';
 import Menu from './components/Menu';
 import Footer from './components/Footer';
+import ProjectCreateForm from './components/ProjectCreateForm';
+import ToDoCreateForm from './components/ToDoCreateForm ';
 import ProjectList from './components/ProjectList';
 import ProjectToDoList from './components/ProjectToDoList';
 import ToDoList from './components/ToDoList';
@@ -20,7 +22,7 @@ class App extends React.Component {
         'projects': [],
         'todos': [],
         'tokenAccess': '',
-        'tokenRefresh': '',
+        'tokenRefresh': ''
         }
     }
 
@@ -63,7 +65,7 @@ class App extends React.Component {
     }
 
     getHeaders() {
-        let headers = {}
+       let headers = {}
         if(this.isAuth()) {
             headers['Authorization'] = `Bearer ${this.state.tokenAccess}`
         }
@@ -136,13 +138,102 @@ class App extends React.Component {
     getTokenFromStorage() {
         const tokenAccess = localStorage.getItem('tokenAccess')
         const tokenRefresh = localStorage.getItem('tokenRefresh')
-        this.setState(
-            {
-                'tokenAccess': tokenAccess,
-                'tokenRefresh': tokenRefresh
-            },
-            () => this.getData()
+        axios.post('http://127.0.0.1:8000/api-jwt/verify/', {token: tokenAccess})
+            .then(response => {
+                this.setState(
+                    {
+                        'tokenAccess': tokenAccess,
+                        'tokenRefresh': tokenRefresh
+                    },
+                    () => this.getData()
+                    )
+                console.log('Токен валидный')
+            }
+            )
+            .catch(error => {
+                if (error.response.data.code === 'token_not_valid') {
+                    axios.post('http://127.0.0.1:8000/api-jwt/refresh/', {refresh: tokenRefresh})
+                        .then(response => {
+                            localStorage.setItem('tokenAccess', response.data.access)
+                            this.setState(
+                                {
+                                    'tokenAccess': response.data.access
+                                },
+                                () => this.getData(),
+                                console.log('Токен обновлён')
+                            )
+                        }
+                        )
+                        .catch(error => {
+                            console.log(error)
+                        }
+                        )
+                }
+                else {
+                    console.log(error)
+                }
+            }
+            )
+    }
+    
+    createProject(projectName, link, description, users) {
+        const headers = this.getHeaders()
+        axios.post(
+            'http://127.0.0.1:8000/api/projects/', 
+            {'project_name': projectName, 'link': link, 'description': description, 'project_team': users}, 
+            {headers}
         )
+            .then(response => {
+                this.getData()
+            }
+            )
+            .catch(error => {
+                console.log(error)
+            }
+            )
+    }
+
+    deleteProject(projectID) {
+        const headers = this.getHeaders()
+        axios.delete(`http://127.0.0.1:8000/api/projects/${projectID}`, {headers})
+            .then(response => {
+                this.getData()
+            }
+            )
+            .catch(error => {
+                console.log(error)
+            }
+            )
+    }
+
+    createToDo(project, text, userCreated, isActive) {
+        const headers = this.getHeaders()
+        axios.post(
+            'http://127.0.0.1:8000/api/todo/', 
+            {'project': project, 'text': text, 'user_created': userCreated, 'is_active': isActive}, 
+            {headers}
+        )
+            .then(response => {
+                this.getData()
+            }
+            )
+            .catch(error => {
+                console.log(error)
+            }
+            )
+    }
+
+    deleteToDo(todoID) {
+        const headers = this.getHeaders()
+        axios.delete(`http://127.0.0.1:8000/api/todo/${todoID}`, {headers})
+            .then(response => {
+                this.getData()
+            }
+            )
+            .catch(error => {
+                console.log(error)
+            }
+            )
     }
 
     componentDidMount() {
@@ -163,6 +254,9 @@ class App extends React.Component {
                             <Link to='/projects'>Projects</Link>
                         </li>
                         <li>
+                            <Link to='/todo'>ToDo</Link>
+                        </li>
+                        <li>
                             {
                                 this.isAuth() ? <button onClick={() => this.logout()}>Logout</button> :
                                 <Link to='/login'>Login</Link>
@@ -173,11 +267,22 @@ class App extends React.Component {
                 <Routes>
                     <Route exact path='/users' element={<UserList users={this.state.users} />} />
                     <Route exact path='/projects'>
-                        <Route index element={<ProjectList projects={this.state.projects} />} />
-                        <Route path=':projectID' element={<ProjectToDoList todos={this.state.todos} />} />
+                        <Route index element={<ProjectList projects={this.state.projects} 
+                            deleteProject={(projectID) => this.deleteProject(projectID)} />} />
+                        <Route path=':projectID' element={<ProjectToDoList todos={this.state.todos} 
+                            deleteToDo={(todoID) => this.deleteToDo(todoID)} />} />
                     </Route>
-                    <Route exact path='/todo' element={<ToDoList todos={this.state.todos} />} />
-                    <Route exact path='/login' element={<LoginForm getToken={(username, password) => this.getToken(username, password)} />} />
+                    <Route exact path='/projects/create' element={<ProjectCreateForm users={this.state.users} 
+                        createProject={(projectName, link, description, users) => 
+                        this.createProject(projectName, link, description, users)} />} />
+                    <Route exact path='/todo/create' element={<ToDoCreateForm projects={this.state.projects}
+                        users={this.state.users} createToDo={(project, text, userCreated, isActive) =>
+                        this.createToDo(project, text, userCreated, isActive)} />} />
+                    <Route exact path='/todo' element={<ToDoList todos={this.state.todos} 
+                        deleteToDo={(todoID) => this.deleteToDo(todoID)} />} />
+                    <Route exact path='/login' 
+                        element={<LoginForm getToken={(username, password) => 
+                        this.getToken(username, password)} />} />
                     <Route exact path='/' element={<Navigate to='/users' />} />
                     <Route path='*' element={<NotFound404 />} />
                 </Routes>
