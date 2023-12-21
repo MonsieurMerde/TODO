@@ -11,7 +11,8 @@
             "program": "${workspaceFolder}/manage.py",
             "args": [
                 "runserver",
-                "127.0.0.1:8000"
+                "--settings",
+                "backend.settings.debug_pg",
             ],
             "django": true,
             "justMyCode": false
