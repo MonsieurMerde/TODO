@@ -63,7 +63,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-ROOT_URLCONF = "backend.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -83,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "backend.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-GRAPHENE = {"SCHEMA": "backend.graphql.schema"}
+GRAPHENE = {"SCHEMA": "config.graphql.schema"}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
