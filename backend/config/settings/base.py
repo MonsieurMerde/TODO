@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-4!+sq#wd2q)7$*8jo9=op_vbptll2e_5v#mkd702nfe1nb%cg0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -146,7 +146,7 @@ AUTH_USER_MODEL = "users.User"
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
-        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",
+        # "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",
         # "rest_framework.renderers.JSONRenderer",
         # "rest_framework.renderers.BrowsableAPIRenderer",
     ],

@@ -11,6 +11,7 @@ services:
       POSTGRES_DB: 'todo'
       POSTGRES_USER: 'admin'
       POSTGRES_PASSWORD: 'admin'
+
   adminer:
     image: adminer:4.8.0-standalone
     privileged: true
@@ -19,3 +20,18 @@ services:
       - 8080:8080
     depends_on:
       - db
+
+  backend:
+      build: ./backend
+      privileged: true
+      restart: always
+      ports:
+        - 8010:8010
+      depends_on:
+        - db
+      command: bash -c "
+        python manage.py migrate &&
+        gunicorn config.wsgi -b 0.0.0.0:8010
+        "
+      environment:
+        DJANGO_SETTINGS_MODULE: config.settings.production
