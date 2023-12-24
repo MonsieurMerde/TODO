@@ -25,13 +25,23 @@ services:
       build: ./backend
       privileged: true
       restart: always
-      ports:
-        - 8010:8010
+      expose:
+        - 8010
       depends_on:
         - db
       command: bash -c "
         python manage.py migrate &&
+        python manage.py createusers &&
         gunicorn config.wsgi -b 0.0.0.0:8010
         "
       environment:
         DJANGO_SETTINGS_MODULE: config.settings.production
+
+  nginx:
+    build: ./nginx
+    privileged: true
+    restart: always
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
