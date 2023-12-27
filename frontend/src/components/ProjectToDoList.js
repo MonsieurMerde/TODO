@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-const ToDoItem = ({todo}) => {
+const ToDoItem = ({todo, deleteToDo}) => {
     return (
         <tr>
             <td>
@@ -13,14 +13,16 @@ const ToDoItem = ({todo}) => {
             <td>
                 {todo.userCreated}
             </td>
-            
+            <td>
+                <button onClick={() => deleteToDo(todo.id)} type='button'>Delete</button>
+            </td>
         </tr>
     );
 };
 
-const ProjectToDoList = ({todos}) => {
+const ProjectToDoList = ({todos, deleteToDo}) => {
     let {projectID} = useParams()
-    let filtered_todos = todos.filter((todo) => todo.project === projectID)
+    let filteredTodos = todos.filter((todo) => todo.project === parseInt(projectID) && todo.isActive === true)
     return (
         <table>
             <th>
@@ -32,7 +34,7 @@ const ProjectToDoList = ({todos}) => {
             <th>
                 Creator
             </th>
-            {filtered_todos.map((todo) => <ToDoItem todo={todo} />)}
+            {filteredTodos.map((todo) => <ToDoItem todo={todo} deleteToDo={deleteToDo} />)}
         </table>
     );
 };
