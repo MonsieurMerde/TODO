@@ -45,12 +45,13 @@ class App extends React.Component {
             }
             )
             .catch(error => {
-                if (error.response.status === 401) {
-                    alert('Неверный логин или пароль')
-                }
-                else {
-                    console.log(error)
-                }
+                console.log(error)
+                // if (error.response.status === 401) {
+                //     alert('Неверный логин или пароль')
+                // }
+                // else {
+                //     console.log(error)
+                // }
 
             }
             )

@@ -8,10 +8,11 @@
             "name": "DRF",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/manage.py",
+            "program": "${workspaceFolder}/backend/manage.py",
             "args": [
                 "runserver",
-                "127.0.0.1:8000"
+                "--settings",
+                "config.settings.debug_pg",
             ],
             "django": true,
             "justMyCode": false

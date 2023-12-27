@@ -1,0 +1,56 @@
+version: '3.1'
+
+services: 
+  db:
+    image: postgres:13.7
+    privileged: true
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: 'todo'
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: 'admin'
+
+  adminer:
+    image: adminer:4.8.0-standalone
+    privileged: true
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+  backend:
+      build: ./backend
+      privileged: true
+      restart: always
+      expose:
+        - 8010
+      depends_on:
+        - db
+      command: bash -c "
+        python manage.py migrate &&
+        python manage.py createusers &&
+        gunicorn config.wsgi -b 0.0.0.0:8010
+        "
+      environment:
+        DJANGO_SETTINGS_MODULE: config.settings.production
+
+  nginx:
+    build: ./nginx
+    privileged: true
+    restart: always
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
+
+  frontend:
+    build: ./frontend
+    privileged: true
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - nginx
